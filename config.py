@@ -3,24 +3,30 @@ dbname = 'problems.sqlite3'
 # コンテストセット一覧
 contest_sets = [
     {
-        'name': 'asakatsu_extra',
-        'title': 'あさかつ%-m/%-d EXTRA',
-        'memo': 'あさかつ公認のおまけ黄Diff2問（含：試験管）です。 感想戦も同じサーバーでやっています。',
-        'everyday_start_time': '07:30',
-        'duration_second': 3600,
+        'name': 'Daily_Training',
+        'title': 'Daily_Training_%-m/%-d',
+        'memo': '毎日 茶(650-800)／緑(800-950)／緑(950-1100)',
+        'everyday_start_time': '21:00',
+        'duration_second': 5400,
         'penalty_second': 300,
         'problem_infos': [
             {
-                'difficulty_range': (2000, 2199),
-                'point': 1,
+                'difficulty_range': (650, 800),
+                'point': 350,
                 'include_experimental': True,
-                'duplicate_remove_days': 60
+                'duplicate_remove_days': 0
             },
             {
-                'difficulty_range': (2200, 2399),
-                'point': 1,
+                'difficulty_range': (800, 950),
+                'point': 400,
                 'include_experimental': True,
-                'duplicate_remove_days': 60
+                'duplicate_remove_days': 0
+            },
+            {
+                'difficulty_range': (950, 1100),
+                'point': 450,
+                'include_experimental': True,
+                'duplicate_remove_days': 0
             }
         ]
     }
