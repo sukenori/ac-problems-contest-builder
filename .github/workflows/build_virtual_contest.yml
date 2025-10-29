@@ -1,0 +1,41 @@
+name: build_virtual_contest
+on:
+  # 手動実行
+  workflow_dispatch:
+  # 定期実行
+  schedule:
+    # 分 時 日 月 曜日
+    - cron: '0 11 * * *'  # 毎週月曜日の朝10時に実行(+9)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # 実行する処理＆コマンド指定
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: build virtual contest
+        env:
+          TZ: 'Asia/Tokyo'
+        run: |
+          # パッケージのインストール
+          python -m pip install -r requirements.txt
+          # 出題データの読み込み
+          python config.py
+          # コンテストを立てる
+          python main-for-actions.py ${{ secrets.ATCODER_PROBLEMS_TOKEN }} >> log.txt
+          # ログの表示
+          cat log.txt
+      - name: push to main branch
+        run: |
+          # ユーザー情報の設定
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          # 変更の追加
+          git add problems.sqlite3
+          git commit -F log.txt
+          git push
