@@ -92,7 +92,7 @@ r = requests.post('https://kenkoooo.com/atcoder/internal-api/contest/create', he
     'start_epoch_second': int(start_dt.timestamp()),
     'duration_second': contest['duration_second'],
     'mode': None,
-    'is_public': True,
+    'is_public': False,
     'penalty_second': contest['penalty_second'],
 })
 if r.status_code != 200:
