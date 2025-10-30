@@ -39,5 +39,9 @@ jobs:
           # 変更の追加
           git pull --rebase
           git add problems.sqlite3
-          git commit -F log.txt
-          git push
+          if git status --porcelain | grep -q '^A\|^M'; then
+            git commit -F log.txt
+            git push
+          else
+            echo "No changes to commit, skipping push."
+          fi
