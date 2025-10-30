@@ -4,6 +4,7 @@ import random
 import re
 import requests
 import sys
+import os
 
 import config
 
@@ -84,7 +85,8 @@ for i, problem_info in enumerate(problem_infos):
 
 start_dt = datetime.datetime.strptime(date + ' ' + contest['everyday_start_time'], '%Y-%m-%d %H:%M')
 
-token = input('AtCoder Problemsのトークンを入力してください: ')
+token = os.environ.get("ATCODER_PROBLEMS_TOKEN")
+# token = input('AtCoder Problemsのトークンを入力してください: ')
 
 headers = {
     'Content-Type': 'application/json',
