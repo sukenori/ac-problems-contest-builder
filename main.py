@@ -47,11 +47,11 @@ if contest_info is None:
 else:
     date = contest_info[1]
     print('次回のコンテストは%sに設定されています' % date)
-    if input('変更しますか？（y/n）: ').lower() == 'y':
-        date = input('新しい開催日を入力してください（YYYY-MM-DD）: ')
-        while re.match(r'\d{4}-\d{2}-\d{2}', date) is None:
-            print('日付フォーマットが不正です')
-            date = input('新しい開催日を入力してください（YYYY-MM-DD）: ')
+    # if input('変更しますか？（y/n）: ').lower() == 'y':
+    #     date = input('新しい開催日を入力してください（YYYY-MM-DD）: ')
+    #     while re.match(r'\d{4}-\d{2}-\d{2}', date) is None:
+    #         print('日付フォーマットが不正です')
+    #         date = input('新しい開催日を入力してください（YYYY-MM-DD）: ')
     c.execute('UPDATE contest_info SET next_start_date = date(?, \'+1 day\') WHERE name = ?', (date, contest['name']))
 
 problem_infos = contest['problem_infos']
