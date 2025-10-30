@@ -3,6 +3,7 @@ import sqlite3
 import random
 import re
 import requests
+import sys
 
 import config
 
@@ -33,10 +34,13 @@ c.execute('CREATE TABLE IF NOT EXISTS past_problems (contest_name TEXT, date DAT
 c.execute('SELECT * FROM contest_info WHERE name = ?', (contest['name'],))
 contest_info = c.fetchone()
 if contest_info is None:
-    date = input('作成するコンテストの開催日を入力してください（YYYY-MM-DD）: ')
-    while re.match(r'\d{4}-\d{2}-\d{2}', date) is None:
-        print('日付フォーマットが不正です')
+    if len(sys.argv) > 1:
+        date = sys.argv[1]
+    else:
         date = input('作成するコンテストの開催日を入力してください（YYYY-MM-DD）: ')
+        while re.match(r'\d{4}-\d{2}-\d{2}', date) is None:
+            print('日付フォーマットが不正です')
+            date = input('作成するコンテストの開催日を入力してください（YYYY-MM-DD）: ')
     c.execute('INSERT INTO contest_info VALUES (?, date(?, \'+1 day\'))', (contest['name'], date))
 else:
     date = contest_info[1]
