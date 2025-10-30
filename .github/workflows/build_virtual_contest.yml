@@ -27,7 +27,8 @@ jobs:
           # 出題データの読み込み
           python config.py
           # コンテストを立てる
-          python main.py ${{ secrets.ATCODER_PROBLEMS_TOKEN }} >> log.txt
+          TODAY=$(date +%F)
+          python main.py $TODAY ${{ secrets.ATCODER_PROBLEMS_TOKEN }} >> log.txt
           # ログの表示
           cat log.txt
       - name: push to main branch
