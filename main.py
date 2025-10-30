@@ -35,8 +35,9 @@ c.execute('CREATE TABLE IF NOT EXISTS past_problems (contest_name TEXT, date DAT
 c.execute('SELECT * FROM contest_info WHERE name = ?', (contest['name'],))
 contest_info = c.fetchone()
 if contest_info is None:
-    if len(sys.argv) > 1:
+    if len(sys.argv) > 2:
         date = sys.argv[1]
+        token = sys.argv[2]
     else:
         date = input('作成するコンテストの開催日を入力してください（YYYY-MM-DD）: ')
         while re.match(r'\d{4}-\d{2}-\d{2}', date) is None:
@@ -85,8 +86,8 @@ for i, problem_info in enumerate(problem_infos):
 
 start_dt = datetime.datetime.strptime(date + ' ' + contest['everyday_start_time'], '%Y-%m-%d %H:%M')
 
-token = os.environ.get("ATCODER_PROBLEMS_TOKEN")
-# token = input('AtCoder Problemsのトークンを入力してください: ')
+if len(sys.argv) < 2:
+    token = input('AtCoder Problemsのトークンを入力してください: ')
 
 headers = {
     'Content-Type': 'application/json',
