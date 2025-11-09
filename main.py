@@ -40,19 +40,19 @@ c.execute('CREATE TABLE IF NOT EXISTS past_problems (contest_name TEXT, date DAT
 c.execute('SELECT * FROM contest_info WHERE name = ?', (contest['name'],))
 contest_info = c.fetchone()
 if contest_info is None:
-    date = input('作成するコンテストの開催日を入力してください（YYYY-MM-DD）: ')
-    while re.match(r'\d{4}-\d{2}-\d{2}', date) is None:
-        print('日付フォーマットが不正です')
-        date = input('作成するコンテストの開催日を入力してください（YYYY-MM-DD）: ')
+    #date = input('作成するコンテストの開催日を入力してください（YYYY-MM-DD）: ')
+    #while re.match(r'\d{4}-\d{2}-\d{2}', date) is None:
+    #    print('日付フォーマットが不正です')
+    #    date = input('作成するコンテストの開催日を入力してください（YYYY-MM-DD）: ')
     c.execute('INSERT INTO contest_info VALUES (?, date(?, \'+1 day\'))', (contest['name'], date))
 else:
-    date = contest_info[1]
-    print('次回のコンテストは%sに設定されています' % date)
-    if input('変更しますか？（y/n）: ').lower() == 'y':
-        date = input('新しい開催日を入力してください（YYYY-MM-DD）: ')
-        while re.match(r'\d{4}-\d{2}-\d{2}', date) is None:
-            print('日付フォーマットが不正です')
-            date = input('新しい開催日を入力してください（YYYY-MM-DD）: ')
+    #date = contest_info[1]
+    #print('次回のコンテストは%sに設定されています' % date)
+    #if input('変更しますか？（y/n）: ').lower() == 'y':
+    #    date = input('新しい開催日を入力してください（YYYY-MM-DD）: ')
+    #    while re.match(r'\d{4}-\d{2}-\d{2}', date) is None:
+    #        print('日付フォーマットが不正です')
+    #        date = input('新しい開催日を入力してください（YYYY-MM-DD）: ')
     c.execute('UPDATE contest_info SET next_start_date = date(?, \'+1 day\') WHERE name = ?', (date, contest['name']))
 
 problem_infos = contest['problem_infos']
@@ -87,7 +87,7 @@ for i, problem_info in enumerate(problem_infos):
 
 start_dt = datetime.datetime.strptime(date + ' ' + contest['everyday_start_time'], '%Y-%m-%d %H:%M')
 
-token = input('AtCoder Problemsのトークンを入力してください: ')
+#token = input('AtCoder Problemsのトークンを入力してください: ')
 
 headers = {
     'Content-Type': 'application/json',
