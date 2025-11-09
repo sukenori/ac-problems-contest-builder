@@ -3,8 +3,6 @@ import sqlite3
 import random
 import re
 import requests
-import sys
-import os
 
 import config
 
@@ -13,6 +11,12 @@ contest_sets = config.contest_sets
 
 conn = sqlite3.connect(dbname)
 c = conn.cursor()
+
+if len(sys.argv) < 3:
+    print('Usage: python main.py <date:YYYY-MM-DD> <atcoder_token>')
+    exit(1)
+date = sys.argv[1]
+token = sys.argv[2]
 
 contest_names = [contest_set['name'] for contest_set in contest_sets]
 if len(contest_names) == 0:
@@ -35,23 +39,19 @@ c.execute('CREATE TABLE IF NOT EXISTS past_problems (contest_name TEXT, date DAT
 c.execute('SELECT * FROM contest_info WHERE name = ?', (contest['name'],))
 contest_info = c.fetchone()
 if contest_info is None:
-    if len(sys.argv) > 2:
-        date = sys.argv[1]
-        token = sys.argv[2]
-    else:
+    date = input('作成するコンテストの開催日を入力してください（YYYY-MM-DD）: ')
+    while re.match(r'\d{4}-\d{2}-\d{2}', date) is None:
+        print('日付フォーマットが不正です')
         date = input('作成するコンテストの開催日を入力してください（YYYY-MM-DD）: ')
-        while re.match(r'\d{4}-\d{2}-\d{2}', date) is None:
-            print('日付フォーマットが不正です')
-            date = input('作成するコンテストの開催日を入力してください（YYYY-MM-DD）: ')
     c.execute('INSERT INTO contest_info VALUES (?, date(?, \'+1 day\'))', (contest['name'], date))
 else:
     date = contest_info[1]
     print('次回のコンテストは%sに設定されています' % date)
-    # if input('変更しますか？（y/n）: ').lower() == 'y':
-    #     date = input('新しい開催日を入力してください（YYYY-MM-DD）: ')
-    #     while re.match(r'\d{4}-\d{2}-\d{2}', date) is None:
-    #         print('日付フォーマットが不正です')
-    #         date = input('新しい開催日を入力してください（YYYY-MM-DD）: ')
+    if input('変更しますか？（y/n）: ').lower() == 'y':
+        date = input('新しい開催日を入力してください（YYYY-MM-DD）: ')
+        while re.match(r'\d{4}-\d{2}-\d{2}', date) is None:
+            print('日付フォーマットが不正です')
+            date = input('新しい開催日を入力してください（YYYY-MM-DD）: ')
     c.execute('UPDATE contest_info SET next_start_date = date(?, \'+1 day\') WHERE name = ?', (date, contest['name']))
 
 problem_infos = contest['problem_infos']
@@ -64,7 +64,7 @@ for i, problem_info in enumerate(problem_infos):
     for problem_id in problem_json:
         if not 'difficulty' in problem_json[problem_id]:
             continue
-        difficulty = max(0, problem_json[problem_id]['difficulty'] or 0)
+        difficulty = max(0, problem_json[problem_id]['difficulty'])
         if difficulty < difficulty_range[0] or difficulty > difficulty_range[1]:
             continue
         is_experimental = problem_json[problem_id]['is_experimental']
@@ -86,8 +86,7 @@ for i, problem_info in enumerate(problem_infos):
 
 start_dt = datetime.datetime.strptime(date + ' ' + contest['everyday_start_time'], '%Y-%m-%d %H:%M')
 
-if len(sys.argv) < 2:
-    token = input('AtCoder Problemsのトークンを入力してください: ')
+token = input('AtCoder Problemsのトークンを入力してください: ')
 
 headers = {
     'Content-Type': 'application/json',
