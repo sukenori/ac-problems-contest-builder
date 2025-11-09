@@ -65,7 +65,7 @@ for i, problem_info in enumerate(problem_infos):
     for problem_id in problem_json:
         if not 'difficulty' in problem_json[problem_id]:
             continue
-        difficulty = max(0, problem_json[problem_id]['difficulty'])
+        difficulty = max(0, problem_json[problem_id]['difficulty'] if problem_json[problem_id]['difficulty'] is not None else 0)
         if difficulty < difficulty_range[0] or difficulty > difficulty_range[1]:
             continue
         is_experimental = problem_json[problem_id]['is_experimental']
