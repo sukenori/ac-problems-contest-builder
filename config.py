@@ -4,7 +4,7 @@ dbname = 'problems.sqlite3'
 contest_sets = [
     {
         'name': 'Daily_Training',
-        'title': 'Daily_Training_%-m/%-d',
+        'title': 'Daily Training %-y/%-m/%-d',
         'memo': '毎日 茶(650-800)／緑(800-950)／緑(950-1100)',
         'everyday_start_time': '21:00',
         'duration_second': 5400,
