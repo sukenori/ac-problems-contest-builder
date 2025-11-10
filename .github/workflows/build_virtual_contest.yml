@@ -37,10 +37,10 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           # 変更の追加
-          git pull --rebase
           git add problems.sqlite3
           if git status --porcelain | grep -q '^A\|^M'; then
             git commit -F log.txt
+            git pull --rebase
             git push
           else
             echo "No changes to commit, skipping push."
