@@ -103,8 +103,9 @@ r = requests.post('https://kenkoooo.com/atcoder/internal-api/contest/create', he
     'penalty_second': contest['penalty_second'],
 })
 if r.status_code != 200:
-    print('コンテストの作成に失敗しました')
-    exit(0)
+    print(f'コンテストの作成に失敗しました: status_code={r.status_code}')
+    print(f'Response: {r.text}')
+    exit(1)
 contest_id = r.json()['contest_id']
 print('コンテストを作成しました: https://kenkoooo.com/atcoder/#/contest/show/' + contest_id)
 
